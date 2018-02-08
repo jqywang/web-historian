@@ -12,15 +12,16 @@ archive.initialize({
   archivedSites: path.join(__dirname, '/testdata/sites'),
   list: path.join(__dirname, '/testdata/sites.txt')
 });
-
+///Users/student/code/hrsf89-web-historian/web/index.html
+///Users/student/code/hrsf89-web-historian/web/public/index.html
 var request = supertest.agent(server);
 
 describe('server', function() {
-  describe('GET /', function () {
+  describe('GET', function () {
     it('should return the content of index.html', function (done) {
       // just assume that if it contains an <input> tag its index.html
       request
-        .get('/')
+        .get('/public/index.html')
         .expect(200, /<input/, done);
     });
   });

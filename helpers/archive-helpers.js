@@ -26,16 +26,35 @@ exports.initialize = function(pathsObj) {
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(callback) {
+  fs.readFile('/Users/student/code/hrsf89-web-historian/test/testdata/sites.txt', (err, data) => {
+    if(err) console.log(err);
+    data = data.toString();
+    console.log(data);
+    var arrayURLS = data.split('\n');
+    callback(arrayURLS);
+    done();
+  });
 };
 
-exports.isUrlInList = function(url, callback) {
+exports.isUrlInList = function(url) {
+  return (fs.readFile(exports.paths.list, (err, data) => {
+    return data.includes(url);
+  }));
 };
 
 exports.addUrlToList = function(url, callback) {
+  var stream = fs.createWriteStream(exports.paths.list, {flags: 'a'});
+  stream.write(`${url} `);
+  stream.end();
 };
 
 exports.isUrlArchived = function(url, callback) {
+  return fs.existsSync(exports.paths.archivedSites + url);
 };
 
 exports.downloadUrls = function(urls) {
+  for (var i = 0; i < urls.length; i++) {
+    //get urls[i] index.html with whatever method
+  }
+  //clear sites.txt
 };
