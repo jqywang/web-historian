@@ -45,7 +45,7 @@ exports.isUrlInList = function(url, callback) {
 
 exports.addUrlToList = function(url, callback) {
   var stream = fs.createWriteStream(exports.paths.list, {flags: 'a'});
-  stream.write(`${url} `);
+  stream.write(`${url}\n`);
   stream.end();
   callback();
 };
@@ -56,6 +56,7 @@ exports.isUrlArchived = function(url, callback) {
 
 exports.downloadUrls = function(urls) {
   for (var i = 0; i < urls.length; i++) {
+    //htmlfetch(url, fswrite)
     //get urls[i] index.html with whatever method
 
     //fs make file named urls[i] in the right directory

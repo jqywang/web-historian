@@ -34,7 +34,7 @@ describe('server', function() {
 
         // Create or clear the file.
         var fd = fs.openSync(fixturePath, 'w');
-        fs.writeSync(fd, 'google');
+        fs.writeSync(fd, 'www.google.com');
         fs.closeSync(fd);
 
         // Write data to the file.
@@ -63,7 +63,7 @@ describe('server', function() {
         request
           .post('/')
           .type('form')
-          .send({ url: url })
+          .send(JSON.stringify({ url: url}))
           .expect(302, function (err) {
             if (!err) {
               var fileContents = fs.readFileSync(archive.paths.list, 'utf8');

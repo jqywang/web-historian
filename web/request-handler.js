@@ -14,7 +14,7 @@ var headers = {
 };
 exports.handleRequest = function (req, res) {
   var pathName = url.parse(req.url).pathname;
-  pathName = path.join(__dirname, pathName);
+  pathName = path.join(archive.paths.archivedSites, pathName);
   var statusCode = 200;
 
   // if (req.url === '/public/index.html') {
@@ -24,14 +24,30 @@ exports.handleRequest = function (req, res) {
   if(req.method === 'GET') {
     req.setEncoding('utf8');
     fs.readFile(pathName, (err, data) => {
-      if (err) {};
+      if (err) {console.log('get error')};
+      if(!pathName.includes('www.')) {
+        statusCode = 404;
+      }
       res.writeHead(statusCode, headers);
       res.end(data);
     });
     return;
   }
   
-  if(req.method === 'POST') {
+  if (req.method === 'POST') {
+    var body = '';
+    req.on('data', (postdata) =>{
+      body += postdata;
+    });
+    req.on('end', () => {
+      if (body) {
+        var text = JSON.parse(body).url;
+        archive.addUrlToList(text, () => {console.log('posted')});
+        headers['Content-type'] = 'application/JSON';
+        res.writeHead(302, headers);
+        res.end(body);
+      }
+    });
     return;
   }
   res.writeHead(404, headers);
